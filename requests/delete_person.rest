@@ -1,0 +1,3 @@
+DELETE http://localhost:3001/api/persons/:id 
+
+// tested this by adding a person with an id of 99 and then changing the placeholder :id to 99, it worked
