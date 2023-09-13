@@ -49,7 +49,7 @@ app.get('/api/persons/:id', (req, res) => {
     res.json(person)
   } else {
     res.status(404).end()
-  }  
+  }
 })
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -60,11 +60,19 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons', (req, res) => {
-  const person = req.body
-  person.id = Math.floor(Math.random()*1000000)
+  const newPerson = req.body
+  newPerson.id = Math.floor(Math.random() * 1000000)
 
-  persons = persons.concat(person)
-  res.json(person)
+  const existingPerson = persons.find(person => person.name === newPerson.name)
+
+  if (!newPerson.name || !newPerson.number) {
+    return res.status(400).json({ error: 'Must have name and number' })
+  } else if (existingPerson) {
+    return res.status(400).json({ error: 'Name must be unique' })
+  } else {
+    persons = persons.concat(newPerson)
+    res.json(newPerson)
+  }
 })
 
 const PORT = 3001
